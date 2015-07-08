@@ -1,0 +1,2 @@
+#!/bin/bash
+avconv -r 29.92 -i processed_frames/frame_%04d.png -i video_soundtrack.bin -acodec copy output.mp4

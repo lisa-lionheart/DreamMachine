@@ -6,5 +6,5 @@ rm -Rf video_frames
 mkdir -p video_frames
 mkdir -p processed_frames
 
-avconv -i "$1" -vn -acodec copy video_soundtrack.aac
-avconv -i "$1" -f image2 -s 640x360 video_frames/frame_%04d.png 
+avconv -i "$1" -vn -acodec copy video_soundtrack.wav
+avconv -i "$1" -r 29.92 -f image2 video_frames/frame_%04d.png 
