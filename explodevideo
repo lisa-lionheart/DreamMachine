@@ -3,9 +3,8 @@
 echo $1
 
 rm -Rf video_frames
-mkdir video_frames
+mkdir -p video_frames
+mkdir -p processed_frames
+
 avconv -i "$1" -vn -acodec copy video_soundtrack.aac
 avconv -i "$1" -f image2 -s 640x360 video_frames/frame_%04d.png 
-
-sleep 5
-python process_video.py
