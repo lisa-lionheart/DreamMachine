@@ -1,2 +1,6 @@
 #!/bin/bash
-avconv -r 29.92 -i processed_frames/frame_%04d.png -i video_soundtrack.bin -acodec copy output.mp4
+avconv  \
+  -r 29.92 -i processed_frames/frame_%04d.png \
+  -i watermark.png   -filter_complex "[0:v][1:v] overlay=0:0:enable='between(t,0,20)'" \
+  -i video_soundtrack.aac -acodec copy \
+  output.mp4
