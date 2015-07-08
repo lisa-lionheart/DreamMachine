@@ -1,0 +1,48 @@
+from os import listdir, fork, environ
+from os.path import exists, isfile, join
+from multiprocessing import Process
+from time import sleep
+import timeit
+import numpy as np
+
+#Number of GPU devices to use
+GPU_COUNT=4
+
+def f(thread,gpu):
+
+    environ["CUDA_VISIBLE_DEVICES"]="%d"%gpu
+	
+    import deepdream as dd
+
+    
+
+    videoframes = [ f for f in listdir('video_frames') if isfile(join('video_frames',f)) ]
+    np.random.seed(thread)
+    np.random.shuffle(videoframes)
+
+    for frame in videoframes:
+
+        if exists('processed_frames/'+frame):
+            print 'Skipping file already done'
+        else:
+            print frame
+
+            start_time = timeit.default_timer()
+
+            dd.deepdream(
+                img_name=join('video_frames',frame),
+                output_name=join('processed_frames',frame),
+                end='inception_3b/output',
+                iter_n=5,
+                octave_n=4,
+                dump_steps=False
+            )
+
+            elapsed = timeit.default_timer() - start_time
+            print 'took', elapsed
+                
+
+for i in range(64):
+     Process(target=f,args=(i,i%GPU_COUNT,)).start()
+     sleep(0.1)	
+	
