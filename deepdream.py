@@ -30,7 +30,7 @@ def save_image(frame, name='output.png'):
     PIL.Image.fromarray(np.uint8(frame)).save(name)
 
 
-model_path = '../caffe/models/bvlc_googlenet/' # substitute your path here
+model_path = '/home/ubuntu/caffe/models/bvlc_googlenet/' # substitute your path here
 net_fn   = model_path + 'deploy.prototxt'
 param_fn = model_path + 'bvlc_googlenet.caffemodel'
 

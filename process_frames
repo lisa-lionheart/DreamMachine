@@ -13,8 +13,13 @@ GPU_COUNT=4
 def f(thread,gpu):
 
     environ["CUDA_VISIBLE_DEVICES"]="%d"%gpu
-	
+	    
     import deepdream as dd
+    import caffe
+
+    print "Use GPU %d"%gpu 
+
+    caffe.set_mode_gpu()
 
     videoframes = [ f for f in listdir('video_frames') if isfile(join('video_frames',f)) ]
     np.random.seed(thread)
@@ -32,8 +37,8 @@ def f(thread,gpu):
             dd.deepdream(
                 img_name=join('video_frames',frame),
                 output_name=join('processed_frames',frame),
-                end='inception_3b/output',
-                iter_n=5,
+                end='inception_4a/pool_proj',
+                iter_n=10,
                 octave_n=4,
                 dump_steps=False
             )
@@ -42,7 +47,7 @@ def f(thread,gpu):
             print 'took', elapsed
                 
 
-for i in range(64):
+for i in range(GPU_COUNT*4):
      Process(target=f,args=(i,i%GPU_COUNT,)).start()
      sleep(0.1)	
 	
